@@ -1,10 +1,21 @@
 import { Injectable } from '@nestjs/common';
-import {CreateArticleDto} from './dto/create-article.dto';
+import { CreateArticleDto } from './dto/create-article.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { ArticleEntity } from 'src/shared/models/article.entity';
 
 @Injectable()
 export class ArticlesService {
-  create(body: CreateArticleDto) {
-    return 'This action adds a new article';
+  constructor(
+    @InjectRepository(ArticleEntity)
+    private readonly articleRepository: typeof ArticleEntity,
+  ) {}
+
+  async create(body: CreateArticleDto) {
+    const article = new ArticleEntity();
+    article.title = body.title;
+    article.text = body.text;
+    article.description = body.description;
+    article.tags = body.tags;
   }
   getList() {
     return 'This action returns all articles';
