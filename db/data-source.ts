@@ -1,4 +1,4 @@
-import { DataSourceOptions } from 'typeorm';
+import { DataSource, DataSourceOptions } from 'typeorm';
 import { config } from 'dotenv';
 
 config();
@@ -11,7 +11,10 @@ export const dataSourceOptions: DataSourceOptions = {
   password: process.env.DB_PASSWORD || 'serii1981',
   database: process.env.DB_NAME || 'nestjs_blog',
   entities: ['dist/**/*.entity.js'],
-  migrations: ['dist/migrations/*.js'],
+  migrations: ['dist/db/migrations/*.js'],
   synchronize: false,
   logging: true,
 };
+
+const dataSource = new DataSource(dataSourceOptions);
+export default dataSource;
