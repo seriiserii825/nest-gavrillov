@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ArticleEntity } from 'src/shared/models/article.entity';
 import { UserEntity } from 'src/shared/models/user.entity';
 import { ArticleDto } from './dto/article.dto';
+import { UpdateArticleDto } from './dto/update-article.dto';
 
 @Injectable()
 export class ArticlesService {
@@ -56,10 +57,22 @@ export class ArticlesService {
     }
     return new ArticleDto(article);
   }
-  updateById(id: number) {
-    return `This action updates article #${id}`;
+  async updateById(id: number, body: UpdateArticleDto) {
+    const article = await this.articleRepository.update({ id }, { ...body });
+    if (!article) {
+      throw new NotFoundException('Article not found');
+    }
+    return await this.getById(id);
   }
-  deleteById(id: number) {
-    return `This action deletes article #${id}`;
+ async deleteById(id: number) {
+    const article = await this.articleRepository.findOne({ where: { id } });
+    if (!article) {
+      throw new NotFoundException('Article not found');
+    }
+    await this.articleRepository.delete({ id }).catch((err) => {
+      console.error('Error deleting article:', err);
+      throw new NotFoundException('Error deleting article');
+    });
+    return { message: 'Article deleted successfully' };
   }
 }
