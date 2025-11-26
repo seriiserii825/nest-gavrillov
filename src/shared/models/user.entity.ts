@@ -1,10 +1,7 @@
 import { BaseEntity, Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import {ArticleEntity} from './article.entity';
 
-export enum EUserRole {
-  ADMIN = 'admin',
-  USER = 'user',
-}
+export type TUserRole = 'admin' | 'editor' | 'reader';
 
 @Entity('users')
 export class UserEntity extends BaseEntity {
@@ -18,7 +15,7 @@ export class UserEntity extends BaseEntity {
   email: string;
 
   @Column()
-  role: EUserRole;
+  role: TUserRole;
 
   @OneToMany(() => ArticleEntity, (article) => article.author)
   articles: ArticleEntity[]

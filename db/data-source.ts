@@ -1,9 +1,10 @@
 import { DataSource, DataSourceOptions } from 'typeorm';
 import { config } from 'dotenv';
+import {SeederOptions} from 'typeorm-extension';
 
 config();
 
-export const dataSourceOptions: DataSourceOptions = {
+export const dataSourceOptions: DataSourceOptions & SeederOptions = {
   type: 'postgres',
   host: process.env.DB_HOST || 'localhost',
   port: process.env.DB_PORT ? parseInt(process.env.DB_PORT) : 5432,
@@ -12,6 +13,7 @@ export const dataSourceOptions: DataSourceOptions = {
   database: process.env.DB_NAME || 'nestjs_blog',
   entities: ['dist/**/*.entity.js'],
   migrations: ['dist/db/migrations/*.js'],
+  seeds: ['dist/src/db/seeders/*.js'],
   synchronize: false,
   logging: true,
 };
