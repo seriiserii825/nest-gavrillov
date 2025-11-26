@@ -4,20 +4,13 @@ import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { ArticlesModule } from './articles/articles.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import {dataSourceOptions} from 'db/data-source';
 
 @Module({
   imports: [
     UsersModule,
     ArticlesModule,
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'postgres',
-      password: 'serii1981',
-      database: 'nestjs_blog',
-      synchronize: false,
-    }),
+    TypeOrmModule.forRoot(dataSourceOptions),
   ],
   controllers: [AppController],
   providers: [AppService],
