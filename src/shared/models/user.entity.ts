@@ -1,4 +1,5 @@
-import { BaseEntity, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { BaseEntity, Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import {ArticleEntity} from './article.entity';
 
 export enum EUserRole {
   ADMIN = 'admin',
@@ -18,6 +19,9 @@ export class UserEntity extends BaseEntity {
 
   @Column()
   role: EUserRole;
+
+  @OneToMany(() => ArticleEntity, (article) => article.author)
+  articles: ArticleEntity[]
   
   @CreateDateColumn({name: 'created_at'})
   createdAt: Date;
